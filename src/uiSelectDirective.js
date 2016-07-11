@@ -368,8 +368,12 @@ uis.directive('uiSelect',
               return;
             }
 
+            // Ported from this PR https://github.com/angular-ui/ui-select/pull/1594
             // Hide the dropdown so there is no flicker until $timeout is done executing.
-            dropdown[0].style.opacity = 0;
+            if ($select.search === '' && !scope.calculateDropdownPos.opened) {
+              dropdown[0].style.opacity = 0;
+              scope.calculateDropdownPos.opened = true;
+            }
 
             if (!uisOffset(dropdown).height && $select.$animate && $select.$animate.on && $select.$animate.enabled(dropdown)) {
               var needsCalculated = true;
